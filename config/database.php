@@ -40,7 +40,7 @@
          * Getting the recipe typed in the search bar
          * @return array
          */
-        function search(string $input): array {
+        function search(string $input) : void{
             $sql = "SELECT r.title_recipes, i.name
                     FROM Recipes r
                     LEFT JOIN Ingredients i 
@@ -48,9 +48,9 @@
                     WHERE r.title_recipes ILIKE :search
                     OR i.name ILIKE :search";
     
-            $stmt = $this->conn->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':search' => '%' . $input . '%']);
-            return $this->groupByRecipe($stmt->fetchAll(PDO::FETCH_ASSOC));
+            echo $this->groupByRecipe($stmt->fetchAll(PDO::FETCH_ASSOC));
         }
 
 
