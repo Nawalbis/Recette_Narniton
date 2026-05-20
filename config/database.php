@@ -50,7 +50,9 @@
     
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':search' => '%' . $input . '%']);
-            
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
             foreach ($results as $row) {
                 echo "Recette : " . $row['title_recipes'] . " - Ingrédient : " . $row['name'] . "<br>";
             }
