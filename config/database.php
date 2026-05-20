@@ -36,9 +36,24 @@
             echo "<br>";
         }
 
-        function searchRecipe(string $input){
-            
+        /**
+         * Getting the recipe typed in the search bar
+         * @return array
+         */
+        function search(string $input): array {
+            $sql = "SELECT r.title_recipes, i.name
+                    FROM Recipes r
+                    LEFT JOIN Ingredients i 
+                    ON i.recipe_id = r.id_recipes
+                    WHERE r.title_recipes ILIKE :search
+                    OR i.name ILIKE :search";
+    
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([':search' => '%' . $input . '%']);
+            return $this->groupByRecipe($stmt->fetchAll(PDO::FETCH_ASSOC));
         }
+
+
 
         // /**
         //  * Write autors' full names and all quotes from BDD

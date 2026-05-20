@@ -20,7 +20,7 @@
             <input type="radio" id="create" name="Create">
             <label for="creation">Create New Recipe</label><br>
 
-            <input type="radio" id="bleu" name="couleur" value="bleu">
+            <input type="radio" id="search" name="couleur" value="bleu">
             <label for="search">Search for existing recipes</label><br>
 
 
