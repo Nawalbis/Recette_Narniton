@@ -38,9 +38,9 @@
 
         /**
          * Getting the recipe typed in the search bar
-         * @return array
+         * @return void
          */
-        function search(string $input) : void{
+        function search(string $input): void{
             $sql = "SELECT r.title_recipes, i.name
                     FROM Recipes r
                     LEFT JOIN Ingredients i 
@@ -50,10 +50,13 @@
     
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':search' => '%' . $input . '%']);
-            echo $this->groupByRecipe($stmt->fetchAll(PDO::FETCH_ASSOC));
+
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            foreach ($results as $row) {
+                echo "Recette : " . $row['title_recipes'] . " - Ingrédient : " . $row['name'] . "<br>";
+            }
         }
-
-
 
         // /**
         //  * Write autors' full names and all quotes from BDD
