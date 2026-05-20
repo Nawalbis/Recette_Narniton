@@ -37,28 +37,98 @@
         }
 
         /**
-         * Getting the recipe typed in the search bar
+         * Getting all the recipes
          * @return array
          */
-        function search(string $input): void{
-            $sql = "SELECT r.title_recipes, i.name
-                    FROM Recipes r
-                    LEFT JOIN Ingredients i 
-                    ON i.recipe_id = r.id_recipes
-                    WHERE r.title_recipes ILIKE :search
-                    OR i.name ILIKE :search";
-    
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([':search' => '%' . $input . '%']);
+        function getRecipes(): array { 
+            $request = "SELECT * FROM recipes"; 
 
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $statement = $this->pdo->prepare($request); 
+            $statement->execute(); 
 
-            foreach ($results as $row) {
-                echo "Recette : " . $row['title_recipes'] . " - Ingrédient : " . $row['name'] . "<br>";
-            }
+            return $statement->fetchAll(PDO::FETCH_ASSOC); 
         }
 
+        /**
+         * Getting 1 recipe in particular
+         * @return array
+         */
+        function getRecipeById(int $id): array { 
+            $request = " SELECT * FROM recipes WHERE id_recipes = :id "; 
 
+            $statement = $this->pdo->prepare($request); 
+            $statement->execute([ ':id' => $id ]); 
+
+            return $statement->fetch(PDO::FETCH_ASSOC); 
+        }
+
+        /**
+         * Getting the ingredients
+         * @return array
+         */
+        function getIngredients(int $recipeId): array { 
+            $request = " SELECT * FROM ingredients WHERE recipe_id = :id "; 
+
+            $statement = $this->pdo->prepare($request); 
+            $statement->execute([ ':id' => $recipeId ]); 
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC); 
+        }
+
+        /**
+         * Getting the steps
+         * @return array
+         */
+        function getSteps(int $recipeId): array { 
+            $request = " SELECT * FROM steps WHERE recipe_id = :id ORDER BY step_number "; 
+            
+            $statement = $this->pdo->prepare($request); 
+            $statement->execute([ ':id' => $recipeId ]); 
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC); 
+        }
+
+        /**
+         * Getting the recipe typed in the search bar
+         * @return void
+         */
+        function addRecipe( string $title, string $description ): void { 
+
+            $request = " INSERT INTO recipes 
+                        (user_id, title_recipes, description_recipe) 
+                        VALUES (1, :title, :description) "; 
+
+            $statement = $this->pdo->prepare($request); 
+
+            $statement->execute([ ':title' => $title, ':description' => $description ]); 
+        } 
+
+        /**
+         * Searching for a recipe
+         * @return array
+         */
+        function search(string $input): array {
+
+            $sql = "
+                SELECT DISTINCT r.*
+                FROM recipes r
+        
+                LEFT JOIN ingredients i
+                ON i.recipe_id = r.id_recipes
+        
+                WHERE r.title_recipes ILIKE :search
+                OR i.name ILIKE :search
+            ";
+        
+            $stmt = $this->pdo->prepare($sql);
+        
+            $stmt->execute([
+                ':search' => '%' . $input . '%'
+            ]);
+        
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 
         // /**
         //  * Write autors' full names and all quotes from BDD
@@ -323,5 +393,5 @@
         //     $statement->execute();
         // }
 
-    }
+    
 ?>
