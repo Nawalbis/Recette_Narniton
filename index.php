@@ -6,6 +6,7 @@
     <title>Narniton</title>
 
     <link rel="stylesheet" href="style.css">
+    <script src="assets/js/recipes.js"></script>
 
 </head>
 <body>
@@ -16,19 +17,20 @@
 
         $db = new Database();
 
-        if(isset($_POST['title']) && isset($_POST['description'])){
+        if (isset($_POST['title']) && isset($_POST['description'])) {
             $db->addRecipe(
                 $_POST['title'],
-                $_POST['description']
+                $_POST['description'],
+                $_POST['ingredients'] ?? [], 
+                $_POST['steps'] ?? []
             );
         }
 
-        if(isset($_GET['search']))
+        if (isset($_GET['search']))
             $recipes = $db->search($_GET['search']);
         else
             $recipes = $db->getRecipes();
-        
-    ?>
+        ?>
 
 
 
@@ -85,6 +87,30 @@
             <textarea name="description" placeholder="Recipe description" required></textarea>
 
             <br><br>
+            <div id="ingredients">
+                <div class="ingredient-row">
+                <input type="text"   name="ingredients[0][name]"   placeholder="Nom" />
+                <input type="number" name="ingredients[0][amount]" placeholder="Quantité" />
+                <select name="ingredients[0][unit]">
+                    <option value="g">g</option>
+                    <option value="kg">kg</option>
+                    <option value="ml">ml</option>
+                    <option value="L">L</option>
+                    <option value="pieces">pieces</option>
+                </select>
+                </div>
+            </div>
+            <button type="button" onclick="addIngredient()">Add an ingredient</button>
+
+            <br><br>
+            <div id="steps">
+                <div class="step-row">
+                    <textarea name="steps[0][description]" placeholder="Step 1:"></textarea>
+                </div>
+            </div>
+            <button type="button" onclick="addStep()">Add a step</button>
+
+            <br><br>
             <button type="submit">Add Recipe</button>
 
         </form>
@@ -93,4 +119,3 @@
 
 </body>
 </html>
-

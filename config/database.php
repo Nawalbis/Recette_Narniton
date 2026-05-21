@@ -92,16 +92,66 @@
          * Getting the recipe typed in the search bar
          * @return void
          */
-        function addRecipe( string $title, string $description ): void { 
+        public function addRecipe(string $title, string $description, $ingredients = [], $steps = []){
+            $stmt = $this->pdo->prepare("
+                INSERT INTO recipes (user_id, title_recipes, description_recipe)
+                VALUES (:user_id, :title, :description)
+                RETURNING id_recipes
+            ");
+            $stmt->execute([
+                ':user_id'     => 1, //to change if user session
+                ':title'       => $title,
+                ':description' => $description,
+            ]);
 
-            $request = " INSERT INTO recipes 
-                        (user_id, title_recipes, description_recipe) 
-                        VALUES (1, :title, :description) "; 
+            $recipe_id = $stmt->fetchColumn();
 
-            $statement = $this->pdo->prepare($request); 
+            $stmtIng = $this->pdo->prepare("
+                INSERT INTO ingredients (recipe_id, name, quantity, unit)
+                VALUES (:recipe_id, :name, :quantity, :unit)
+            ");
 
-            $statement->execute([ ':title' => $title, ':description' => $description ]); 
-        } 
+            foreach ($ingredients as $ingredient){
+                $name = $ingredient['name'] ?? '';
+                $quantity = (int)($ingredient['amount'] ?? 0);
+                $unit = $ingredient['unit'] ?? '';
+
+                if ($name === '' || $quantity <= 0) continue; //if given ingredient is wrong
+
+                $stmtIng->execute([
+                    ':recipe_id' => $recipe_id,
+                    ':name'      => $name,
+                    ':quantity'  => $quantity,
+                    ':unit'      => $unit,
+                ]);
+            }
+
+            $this->addSteps($recipe_id, $steps);
+        }
+
+        /**
+         * Summary of addSteps
+         * @param mixed $steps
+         * @return void
+         */
+        function addSteps(int $id, $steps = []) : void {
+            $stmtStep = $this->pdo->prepare("
+                INSERT INTO steps (recipe_id, step_number, description)
+                VALUES (:recipe_id, :step_number, :description)
+            ");
+
+            foreach ($steps as $index => $step) {
+                $description = $step['description'] ?? '';
+
+                if ($description === '') continue; //if no description
+
+                $stmtStep->execute([
+                    ':recipe_id'   => $id,
+                    ':step_number' => $index + 1,
+                    ':description' => $description,
+                ]);
+            }
+        }
 
         /**
          * Searching for a recipe
