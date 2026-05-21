@@ -1,0 +1,172 @@
+/* ===== Narniton — style simple & chaleureux ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap');
+
+:root {
+  --bg:       #fdf6ee;
+  --surface:  #fff9f2;
+  --border:   #e8d9c4;
+  --text:     #2e1f0e;
+  --muted:    #8a7060;
+  --accent:   #c25c2a;
+  --accent-h: #a34820;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ---- Layout ---- */
+#accueil {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* ---- Logo + titre ---- */
+.logo { margin-bottom: 0.5rem; }
+.logo img { height: 48px; }
+
+h1 {
+  font-family: 'Lora', serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  font-family: 'Lora', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* ---- Barre de recherche ---- */
+form[method="GET"] {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 420px;
+  margin-bottom: 1.5rem;
+}
+
+/* ---- Image d'accueil ---- */
+#accueil > img {
+  display: block;
+  border-radius: 12px;
+  margin: 1rem 0 1.5rem;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+
+/* ---- Grille de recettes ---- */
+.recipes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.recipe-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.18s, box-shadow 0.18s;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.recipe-card h3 {
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.8rem 0.7rem;
+  color: var(--text);
+}
+
+.recipe-card img {
+  width: 100%;
+  flex: 1;
+  object-fit: cover;
+  display: block;
+  min-height: 0;
+}
+
+.recipe-card a { text-decoration: none; }
+
+/* ---- Formulaire ajout ---- */
+form[method="POST"] {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 480px;
+}
+
+/* ---- Champs communs ---- */
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s;
+  margin-bottom: 0.9rem;
+}
+
+input[type="text"]:focus,
+textarea:focus { border-color: var(--accent); }
+
+textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* ---- Boutons ---- */
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.2rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: fit-content;
+}
+
+button:hover { background: var(--accent-h); }
+
+/* ---- Responsive ---- */
+@media (max-width: 500px) {
+  h1 { font-size: 2rem; }
+  form[method="GET"] { flex-direction: column; }
+  .recipes { grid-template-columns: repeat(2, 1fr); }
+}

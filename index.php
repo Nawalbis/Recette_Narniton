@@ -5,7 +5,7 @@
     <meta name="viewport"content="width=device-width, initial-scale=1.0">
     <title>Narniton</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 
 </head>
 <body>
@@ -21,6 +21,8 @@
                 $_POST['title'],
                 $_POST['description']
             );
+            header('Location: index.php');
+            exit();
         }
 
         if(isset($_GET['search']))
@@ -35,7 +37,7 @@
     <section id="accueil">
         <div class="logo">
             <a href="./index.php">
-                <img src="" alt="logo narniton">
+                <img src="assets/img/logo.png" alt="logo narniton">
             </a>
         </div>
 
@@ -52,7 +54,7 @@
 
         <br>
 
-        <img src="img/accueil_narniton.png" alt="accueil" width="300">
+        <img src="assets/img/accueil.png" alt="accueil" width="300">
 
         <h2>Our Recipes</h2>
 
@@ -67,8 +69,7 @@
                     echo "</h3>";
 
                     echo "<a href='views/views.php?id=". $recipe['id_recipes']. "'>";
-
-                    echo "<img src='img/salade_soupejsp.png' width='200' ></a>";
+                    echo "<img src='assets/img/recipe_" . $recipe['id_recipes'] . ".png' width='200'>";
                     echo "</div>";
                 }
             ?>
