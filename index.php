@@ -72,7 +72,7 @@
 
                     echo "<a href='views/views.php?id=". $recipe['id_recipes']. "'>";
                     echo "<img src='assets/img/recipe_" . $recipe['id_recipes'] . ".png' width='200'>";
-                    echo "</div>";
+                    echo "</a></div>";
                 }
             ?>
         </div>

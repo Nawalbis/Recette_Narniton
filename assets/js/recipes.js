@@ -11,6 +11,7 @@ function addIngredient(){
             <option value="g">g</option>
             <option value="kg">kg</option>
             <option value="ml">ml</option>
+            <option value="L">L</option>
             <option value="pieces">pieces</option>
         </select>
         </div>
@@ -26,4 +27,37 @@ function addStep(){
         </div>
     `);
     stepIndex++;
+}
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+if (!id) {
+    document.body.innerHTML = "<p>Identifiant de recette manquant.</p>";
+} 
+else{
+    fetch(`../api/recipe.php?id=${id}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Recette introuvable");
+            return res.json();
+        })
+        .then(data => {
+            const {recipe, ingredients, steps} = data;
+
+            document.querySelector("h1").textContent = recipe.title_recipes;
+            document.querySelector("p").textContent  = recipe.description_recipe;
+
+            const ul = document.querySelector("ul");
+            ul.innerHTML = ingredients.map(i =>
+                `<li>${i.quantity} ${i.unit} ${i.name}</li>`
+            ).join("");
+
+            const ol = document.querySelector("ol");
+            ol.innerHTML = steps.map(s =>
+                `<li>${s.description}</li>`
+            ).join("");
+        })
+        .catch(err => {
+            document.body.innerHTML = `<p>Erreur : ${err.message}</p>`;
+        });
 }

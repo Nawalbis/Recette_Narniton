@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lato:wght@300;400;700&display=swap');
+
+:root {
+  --bg:          #fdf8ef;
+  --surface:     #fffdf7;
+  --border:      #e8dfc8;
+  --accent:      #e8c84a;
+  --accent-soft: #f5e89a;
+  --text:        #3a3020;
+  --text-muted:  #8a7a5a;
+  --radius:      10px;
+}
+
+/* --- Reset léger --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+  padding: 2rem 1rem;
+}
+
+/* --- Conteneur principal --- */
+main, .container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem 3rem;
+  box-shadow: 0 4px 24px rgba(180, 150, 60, 0.08);
+}
+
+/* --- Titres --- */
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid var(--accent);
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 2rem 0 0.75rem;
+}
+
+/* --- Description --- */
+p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* --- Ingrédients --- */
+ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+ul li {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  padding: 0.45rem 0.85rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+/* --- Étapes --- */
+ol {
+  padding-left: 0;
+  list-style: none;
+  counter-reset: step-counter;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+ol li {
+  counter-increment: step-counter;
+  position: relative;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+
+ol li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.6rem;
+  height: 1.6rem;
+  background: var(--accent);
+  color: var(--text);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  main, .container {
+    padding: 1.5rem 1.25rem;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+}
